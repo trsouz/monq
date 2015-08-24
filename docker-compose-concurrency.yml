@@ -1,0 +1,70 @@
+test1:
+  image: node
+  working_dir: /opt/monq
+  command: ./node_modules/.bin/mocha -t 3000 test/test_concurrency.js
+  volumes:
+    - .:/opt/monq
+    - node_modules_latest:/opt/monq/node_modules
+  environment:
+    - MONGODB_URI=mongodb://mongo:27017/monq_tests
+    - MONQ_TEST_COLLECTION_NAME=test1
+    - MONQ_TEST_CONCURRENCY_TASKS_TOTAL=10000
+    - MONQ_TEST_CONCURRENCY_DELAY_MIN=1
+    - MONQ_TEST_CONCURRENCY_DELAY_MAX=1
+  links:
+    - mongo
+
+test2:
+  image: node
+  working_dir: /opt/monq
+  command: ./node_modules/.bin/mocha -t 3000 test/test_concurrency.js
+  volumes:
+    - .:/opt/monq
+    - node_modules_latest:/opt/monq/node_modules
+  links:
+    - mongo
+  environment:
+    - MONGODB_URI=mongodb://mongo:27017/monq_tests
+    - MONQ_TEST_CONCURRENCY_TASKS_TOTAL=10000
+    - MONQ_TEST_COLLECTION_NAME=test2
+    - MONQ_TEST_CONCURRENCY_DELAY_MIN=1
+    - MONQ_TEST_CONCURRENCY_DELAY_MAX=50
+
+test3:
+  image: node
+  working_dir: /opt/monq
+  command: ./node_modules/.bin/mocha -t 3000 test/test_concurrency.js
+  volumes:
+    - .:/opt/monq
+    - node_modules_latest:/opt/monq/node_modules
+  links:
+    - mongo
+  environment:
+    - MONGODB_URI=mongodb://mongo:27017/monq_tests
+    - MONQ_TEST_CONCURRENCY_TASKS_TOTAL=10000
+    - MONQ_TEST_CONCURRENCY_WITHOUT_ORDER=1
+    - MONQ_TEST_COLLECTION_NAME=test3
+    - MONQ_TEST_CONCURRENCY_DELAY_MIN=1
+    - MONQ_TEST_CONCURRENCY_DELAY_MAX=1
+
+test4:
+  image: node
+  working_dir: /opt/monq
+  command: ./node_modules/.bin/mocha -t 3000 test/test_concurrency.js
+  volumes:
+    - .:/opt/monq
+    - node_modules_latest:/opt/monq/node_modules
+  links:
+    - mongo
+  environment:
+    - MONGODB_URI=mongodb://mongo:27017/monq_tests
+    - MONQ_TEST_CONCURRENCY_TASKS_TOTAL=10000
+    - MONQ_TEST_CONCURRENCY_WITHOUT_ORDER=1
+    - MONQ_TEST_COLLECTION_NAME=test4
+    - MONQ_TEST_CONCURRENCY_DELAY_MIN=1
+    - MONQ_TEST_CONCURRENCY_DELAY_MAX=50
+
+mongo:
+  image: mongo
+  volumes:
+    - .tmp/mongo:/data

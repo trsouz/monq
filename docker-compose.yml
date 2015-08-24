@@ -1,0 +1,29 @@
+node:
+  image: node
+  working_dir: /opt/monq
+  command: npm test
+  volumes:
+    - .:/opt/monq
+    - node_modules_latest:/opt/monq/node_modules
+  environment:
+    - MONGODB_URI=mongodb://mongo:27017/monq_tests
+    - MONQ_TEST_TASKS_TOTAL=1000
+  links:
+    - mongo
+
+node10:
+  image: node:0.10
+  working_dir: /opt/monq
+  command: npm test
+  volumes:
+    - node_modules_10:/opt/monq/node_modules
+    - .:/opt/monq
+  environment:
+    - MONGODB_URI=mongodb://mongo:27017/monq_tests
+  links:
+    - mongo
+
+mongo:
+  image: mongo
+  volumes:
+    - .tmp/mongo:/data
